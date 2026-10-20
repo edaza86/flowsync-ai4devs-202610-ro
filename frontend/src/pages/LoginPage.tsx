@@ -8,7 +8,10 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { ApiError } from '@/lib/api'
 import {
+  fieldErrorsFrom,
+  focusFirstInvalid,
   generalErrorMessage,
+  normalizeEmail,
   validateEmail,
   type FieldErrors,
 } from '@/lib/validation'
@@ -27,20 +30,25 @@ export function LoginPage() {
     if (submitting) return
 
     const errors: FieldErrors = {
-      email: validateEmail(email.trim()),
+      email: validateEmail(normalizeEmail(email)),
       password: password ? undefined : 'Introduce tu contraseña',
     }
     setFieldErrors(errors)
     setFormError(null)
-    if (errors.email || errors.password) return
+    if (errors.email || errors.password) return focusFirstInvalid(errors)
 
     setSubmitting(true)
     try {
-      await login({ email: email.trim(), password })
+      await login({ email: normalizeEmail(email), password })
       navigate('/profile', { replace: true })
     } catch (error) {
-      // 400 = credenciales inválidas (E_INVALID_CREDENTIALS); 422 = formato
-      if (error instanceof ApiError && [400, 401, 422].includes(error.status)) {
+      if (error instanceof ApiError && error.status === 422) {
+        // Formato rechazado por VineJS: se muestra en su campo
+        const serverErrors = fieldErrorsFrom(error)
+        setFieldErrors(serverErrors)
+        focusFirstInvalid(serverErrors)
+      } else if (error instanceof ApiError && error.status === 400) {
+        // E_INVALID_CREDENTIALS
         setFormError('Email o contraseña incorrectos.')
       } else {
         setFormError(generalErrorMessage(error))

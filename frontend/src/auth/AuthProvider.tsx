@@ -1,4 +1,10 @@
-import { useCallback, useMemo, useState, type ReactNode } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react'
 import { api, type LoginInput, type SignupInput } from '@/lib/api'
 import { AuthContext, type AuthContextValue } from './auth-context'
 
@@ -23,6 +29,15 @@ function writeToken(token: string | null) {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(readToken)
+
+  // Login o logout en otra pestaña: se refleja aquí
+  useEffect(() => {
+    function handleStorage(event: StorageEvent) {
+      if (event.key === TOKEN_KEY || event.key === null) setToken(readToken())
+    }
+    window.addEventListener('storage', handleStorage)
+    return () => window.removeEventListener('storage', handleStorage)
+  }, [])
 
   const saveToken = useCallback((next: string | null) => {
     writeToken(next)

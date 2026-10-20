@@ -9,7 +9,9 @@ import { Button } from '@/components/ui/button'
 import { ApiError } from '@/lib/api'
 import {
   fieldErrorsFrom,
+  focusFirstInvalid,
   generalErrorMessage,
+  normalizeEmail,
   PASSWORD_MAX,
   PASSWORD_MIN,
   validateEmail,
@@ -33,7 +35,7 @@ export function SignupPage() {
     if (submitting) return
 
     const errors: FieldErrors = {
-      email: validateEmail(email.trim()),
+      email: validateEmail(normalizeEmail(email)),
       password: validatePassword(password),
       passwordConfirmation:
         password === passwordConfirmation
@@ -42,13 +44,13 @@ export function SignupPage() {
     }
     setFieldErrors(errors)
     setFormError(null)
-    if (Object.values(errors).some(Boolean)) return
+    if (Object.values(errors).some(Boolean)) return focusFirstInvalid(errors)
 
     setSubmitting(true)
     try {
       await signup({
         fullName: fullName.trim() || null,
-        email: email.trim(),
+        email: normalizeEmail(email),
         password,
         passwordConfirmation,
       })
@@ -57,6 +59,7 @@ export function SignupPage() {
       if (error instanceof ApiError && error.status === 422) {
         const serverErrors = fieldErrorsFrom(error)
         setFieldErrors(serverErrors)
+        focusFirstInvalid(serverErrors)
         if (Object.keys(serverErrors).length === 0)
           setFormError('Revisa los datos del formulario.')
       } else {

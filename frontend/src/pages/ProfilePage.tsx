@@ -21,6 +21,8 @@ export function ProfilePage() {
   const [user, setUser] = useState<User | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loggingOut, setLoggingOut] = useState(false)
+  // Se incrementa para volver a pedir el perfil tras un error
+  const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
     if (!token) return
@@ -42,7 +44,12 @@ export function ProfilePage() {
     return () => {
       cancelled = true
     }
-  }, [token, clearSession])
+  }, [token, clearSession, attempt])
+
+  function handleRetry() {
+    setError(null)
+    setAttempt((value) => value + 1)
+  }
 
   async function handleLogout() {
     setLoggingOut(true)
@@ -61,10 +68,15 @@ export function ProfilePage() {
         </CardHeader>
         <CardContent>
           {error ? (
-            <Alert variant="destructive">
-              <AlertCircle />
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
+            <div className="grid gap-3">
+              <Alert variant="destructive">
+                <AlertCircle />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+              <Button variant="secondary" onClick={handleRetry}>
+                Reintentar
+              </Button>
+            </div>
           ) : user ? (
             <div className="flex items-center gap-4">
               <div
