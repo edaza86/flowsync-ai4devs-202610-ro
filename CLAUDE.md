@@ -75,3 +75,4 @@ Síguelas en cada cambio de código, en este orden:
 3. **Abre el pull request con `gh pr create`** contra `main`: sube la rama (`git push -u origin HEAD`) y crea el PR con un título en el mismo formato convencional y un cuerpo que resuma el cambio y cómo se ha verificado.
 4. **Después, lanza el subagente `adversarial-reviewer` sobre ese pull request** (pásale el número del PR). Si encuentra fallos, corrígelos en la misma rama (nuevo `/commit` y push) antes de dar el trabajo por terminado.
 5. **En el chat, responde solo con la URL del pull request.** Sin resumen, sin el informe de revisión, sin texto adicional.
+6. **Al mergear el pull request, mueve el ticket de Jira a «Listo».** La clave sale del nombre de la rama o del pie `Refs:` de los commits. Usa la transición cuyo estado destino sea «Listo» (categoría «Done»), y solo cuando el PR esté mergeado, no al abrirlo. Si no hay ticket, no hagas nada.
