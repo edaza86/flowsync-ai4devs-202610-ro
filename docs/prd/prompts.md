@@ -482,3 +482,12 @@ arregla la ruta del hook a docs/prd/prompts.md
   - El hook no afecta a rutas de la API (401, credenciales vacías): no toca el backend, así que esos edge cases no aplican a este PR.
 </agent-message>
 ```
+
+## Prompt 10
+
+**Modelo:** claude-opus-5-5
+**Herramienta:** Claude Code
+
+```
+haz merge del PR
+```
