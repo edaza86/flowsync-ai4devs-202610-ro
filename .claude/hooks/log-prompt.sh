@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# UserPromptSubmit: añade cada prompt, tal cual se lanzó, al final de prompts.md.
+# UserPromptSubmit: añade cada prompt, tal cual se lanzó, al final de docs/prd/prompts.md.
 # PROMPTS_FILE permite apuntar a otro fichero (para probar el hook).
 input=$(cat)
-file="${PROMPTS_FILE:-$CLAUDE_PROJECT_DIR/docs/prompts.md}"
+file="${PROMPTS_FILE:-$CLAUDE_PROJECT_DIR/docs/prd/prompts.md}"
 [ -f "$file" ] || exit 0
 
 prompt=$(jq -r '.prompt // empty' <<<"$input")

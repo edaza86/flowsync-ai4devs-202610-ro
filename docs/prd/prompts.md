@@ -47,7 +47,7 @@ añademe los prompts siempre al fichero prompts.md, si tienes que crear un hook 
 
 ## Prompt 4
 
-**Modelo:** desconocido
+**Modelo:** claude-opus-5-5
 **Herramienta:** Claude Code
 
 ```
@@ -348,4 +348,22 @@ El resultado final debe permitir entender qué construir, para quién, por qué,
 
 ```
 1.- Puede haber tareas sin responsable y cualquiera puede crear tareas por si mismo. 2.-  Por hacer, en curso, revision, hechoo, bloqueado, eliminada. 3.destacar los ultimos cambios de estado pero que aparezca dentro de una lista actualizada con esos cambios.  4.- debe haber una idea de equipo para que cada  tarea la pueda ver solo su equipo.  3. Debe haber un metodo que pueda importar una lista de tareas y su estado, para poder preservar las ya terminadas como las que están en curso en otros gestores.
+```
+
+## Prompt 7
+
+**Modelo:** claude-opus-5-5
+**Herramienta:** Claude Code
+
+```
+sigue con el commit y el PR con todo
+```
+
+## Prompt 8
+
+**Modelo:** claude-opus-5-5
+**Herramienta:** Claude Code
+
+```
+arregla la ruta del hook a docs/prd/prompts.md
 ```
